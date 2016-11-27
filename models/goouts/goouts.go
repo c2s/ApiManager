@@ -132,8 +132,8 @@ func ListGooutApproval(condArr map[string]string, page int, offset int) (num int
 	start := (page - 1) * offset
 	var goout []Goouts
 	qb, _ := orm.NewQueryBuilder("mysql")
-	qb.Select("l.gooutid", "l.userid", "l.started", "l.ended", "l.hours", "l.approverids", "la.status").From("pms_goouts_approver AS la").
-		LeftJoin("pms_goouts AS l").On("l.gooutid = la.gooutid").
+	qb.Select("l.gooutid", "l.userid", "l.started", "l.ended", "l.hours", "l.approverids", "la.status").From("am_goouts_approver AS la").
+		LeftJoin("am_goouts AS l").On("l.gooutid = la.gooutid").
 		Where("la.userid=?").
 		And("l.status=2")
 
@@ -161,8 +161,8 @@ type TmpGooutCount struct {
 
 func CountGooutApproval(condArr map[string]string) int64 {
 	qb, _ := orm.NewQueryBuilder("mysql")
-	qb.Select("Count(1) AS num").From("pms_goouts_approver AS la").
-		LeftJoin("pms_goouts AS l").On("l.gooutid = la.gooutid").
+	qb.Select("Count(1) AS num").From("am_goouts_approver AS la").
+		LeftJoin("am_goouts AS l").On("l.gooutid = la.gooutid").
 		Where("la.userid=?").
 		And("l.status=2")
 	if condArr["status"] == "0" {

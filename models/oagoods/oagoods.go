@@ -132,8 +132,8 @@ func ListOagoodApproval(condArr map[string]string, page int, offset int) (num in
 	start := (page - 1) * offset
 	var oagood []Oagoods
 	qb, _ := orm.NewQueryBuilder("mysql")
-	qb.Select("l.oagoodid", "l.purpose", "l.userid", "l.changed", "l.approverids", "la.status").From("pms_oagoods_approver AS la").
-		LeftJoin("pms_oagoods AS l").On("l.oagoodid = la.oagoodid").
+	qb.Select("l.oagoodid", "l.purpose", "l.userid", "l.changed", "l.approverids", "la.status").From("am_oagoods_approver AS la").
+		LeftJoin("am_oagoods AS l").On("l.oagoodid = la.oagoodid").
 		Where("la.userid=?").
 		And("l.status=2")
 
@@ -161,8 +161,8 @@ type TmpOagoodCount struct {
 
 func CountOagoodApproval(condArr map[string]string) int64 {
 	qb, _ := orm.NewQueryBuilder("mysql")
-	qb.Select("Count(1) AS num").From("pms_oagoods_approver AS la").
-		LeftJoin("pms_oagoods AS l").On("l.oagoodid = la.oagoodid").
+	qb.Select("Count(1) AS num").From("am_oagoods_approver AS la").
+		LeftJoin("am_oagoods AS l").On("l.oagoodid = la.oagoodid").
 		Where("la.userid=?").
 		And("l.status=2")
 	if condArr["status"] == "0" {

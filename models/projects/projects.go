@@ -155,8 +155,8 @@ func ListMyProject(userId int64, page int, offset int) (num int64, err error, op
 	var projects []Projects
 
 	qb, _ := orm.NewQueryBuilder("mysql")
-	qb.Select("p.projectid", "p.name", "p.aliasname", "p.ended", "p.status", "p.projuserid").From("pms_projects_team AS t").
-		LeftJoin("pms_projects AS p").On("p.projectid = t.projectid").
+	qb.Select("p.projectid", "p.name", "p.aliasname", "p.ended", "p.status", "p.projuserid").From("am_projects_team AS t").
+		LeftJoin("am_projects AS p").On("p.projectid = t.projectid").
 		Where("t.userid=?").
 		Limit(offset).Offset(start)
 	sql := qb.String()
@@ -194,9 +194,9 @@ func ChartProjectTeam(projectId int64) (num int64, err error, team []ChartProjec
 	var teams []ChartProject
 	qb, _ := orm.NewQueryBuilder("mysql")
 
-	qb.Select("COUNT(1) AS value", "p.name").From("pms_projects_team AS pt").
-		LeftJoin("pms_users_profile AS up").On("up.userid = pt.userid").
-		LeftJoin("pms_positions AS p").On("p.positionid = up.positionid").
+	qb.Select("COUNT(1) AS value", "p.name").From("am_projects_team AS pt").
+		LeftJoin("am_users_profile AS up").On("up.userid = pt.userid").
+		LeftJoin("am_positions AS p").On("p.positionid = up.positionid").
 		Where("pt.projectid=?").
 		GroupBy("p.`name`")
 	sql := qb.String()
@@ -211,17 +211,17 @@ func ChartProjectNeed(op string, projectId int64) (num int64, err error, need []
 	qb, _ := orm.NewQueryBuilder("mysql")
 
 	if op == "accept" {
-		qb.Select("COUNT(1) AS value", "up.realname AS name").From("pms_projects_needs AS pn").
-			LeftJoin("pms_users_profile AS up").On("up.userid = pn.acceptid").
+		qb.Select("COUNT(1) AS value", "up.realname AS name").From("am_projects_needs AS pn").
+			LeftJoin("am_users_profile AS up").On("up.userid = pn.acceptid").
 			Where("pn.projectid=?").
 			GroupBy("pn.`acceptid`")
 	} else if op == "user" {
-		qb.Select("COUNT(1) AS value", "up.realname AS name").From("pms_projects_needs AS pn").
-			LeftJoin("pms_users_profile AS up").On("up.userid = pn.userid").
+		qb.Select("COUNT(1) AS value", "up.realname AS name").From("am_projects_needs AS pn").
+			LeftJoin("am_users_profile AS up").On("up.userid = pn.userid").
 			Where("pn.projectid=?").
 			GroupBy("pn.`userid`")
 	} /*else if op == "source" {
-		qb.Select("COUNT(1) AS value", "pn.source AS name").From("pms_projects_needs AS pn").
+		qb.Select("COUNT(1) AS value", "pn.source AS name").From("am_projects_needs AS pn").
 			Where("pn.projectid=?").
 			GroupBy("pn.`source`")
 	}*/
@@ -234,7 +234,7 @@ func ChartProjectNeedSource(projectId int64) (num int64, err error, need []Chart
 	var needs []ChartProjectInt
 	qb, _ := orm.NewQueryBuilder("mysql")
 
-	qb.Select("COUNT(1) AS value", "pn.source AS name").From("pms_projects_needs AS pn").
+	qb.Select("COUNT(1) AS value", "pn.source AS name").From("am_projects_needs AS pn").
 		Where("pn.projectid=?").
 		GroupBy("pn.`source`")
 
@@ -250,18 +250,18 @@ func ChartProjectTask(op string, projectId int64) (num int64, err error, task []
 	qb, _ := orm.NewQueryBuilder("mysql")
 
 	if op == "accept" {
-		qb.Select("COUNT(1) AS value", "up.realname AS name").From("pms_projects_task AS pt").
-			LeftJoin("pms_users_profile AS up").On("up.userid = pt.acceptid").
+		qb.Select("COUNT(1) AS value", "up.realname AS name").From("am_projects_task AS pt").
+			LeftJoin("am_users_profile AS up").On("up.userid = pt.acceptid").
 			Where("pt.projectid=?").
 			GroupBy("pt.`acceptid`")
 	} else if op == "user" {
-		qb.Select("COUNT(1) AS value", "up.realname AS name").From("pms_projects_task AS pt").
-			LeftJoin("pms_users_profile AS up").On("up.userid = pt.userid").
+		qb.Select("COUNT(1) AS value", "up.realname AS name").From("am_projects_task AS pt").
+			LeftJoin("am_users_profile AS up").On("up.userid = pt.userid").
 			Where("pt.projectid=?").
 			GroupBy("pt.`userid`")
 	} else if op == "complete" {
-		qb.Select("COUNT(1) AS value", "up.realname AS name").From("pms_projects_task AS pt").
-			LeftJoin("pms_users_profile AS up").On("up.userid = pt.completeid").
+		qb.Select("COUNT(1) AS value", "up.realname AS name").From("am_projects_task AS pt").
+			LeftJoin("am_users_profile AS up").On("up.userid = pt.completeid").
 			Where("pt.projectid=? AND pt.completeid !=0").
 			GroupBy("pt.`completeid`")
 	}
@@ -274,7 +274,7 @@ func ChartProjectTaskSource(projectId int64) (num int64, err error, task []Chart
 	var tasks []ChartProjectInt
 	qb, _ := orm.NewQueryBuilder("mysql")
 
-	qb.Select("COUNT(1) AS value", "pt.type AS name").From("pms_projects_task AS pt").
+	qb.Select("COUNT(1) AS value", "pt.type AS name").From("am_projects_task AS pt").
 		Where("pt.projectid=?").
 		GroupBy("pt.`type`")
 
@@ -290,18 +290,18 @@ func ChartProjectTest(op string, projectId int64) (num int64, err error, test []
 	qb, _ := orm.NewQueryBuilder("mysql")
 
 	if op == "accept" {
-		qb.Select("COUNT(1) AS value", "up.realname AS name").From("pms_projects_test AS pt").
-			LeftJoin("pms_users_profile AS up").On("up.userid = pt.acceptid").
+		qb.Select("COUNT(1) AS value", "up.realname AS name").From("am_projects_test AS pt").
+			LeftJoin("am_users_profile AS up").On("up.userid = pt.acceptid").
 			Where("pt.projectid=?").
 			GroupBy("pt.`acceptid`")
 	} else if op == "user" {
-		qb.Select("COUNT(1) AS value", "up.realname AS name").From("pms_projects_test AS pt").
-			LeftJoin("pms_users_profile AS up").On("up.userid = pt.userid").
+		qb.Select("COUNT(1) AS value", "up.realname AS name").From("am_projects_test AS pt").
+			LeftJoin("am_users_profile AS up").On("up.userid = pt.userid").
 			Where("pt.projectid=?").
 			GroupBy("pt.`userid`")
 	} else if op == "complete" {
-		qb.Select("COUNT(1) AS value", "up.realname AS name").From("pms_projects_test AS pt").
-			LeftJoin("pms_users_profile AS up").On("up.userid = pt.completeid").
+		qb.Select("COUNT(1) AS value", "up.realname AS name").From("am_projects_test AS pt").
+			LeftJoin("am_users_profile AS up").On("up.userid = pt.completeid").
 			Where("pt.projectid=? AND pt.completeid !=0").
 			GroupBy("pt.`completeid`")
 	}

@@ -130,8 +130,8 @@ func ListOvertimeApproval(condArr map[string]string, page int, offset int) (num 
 	start := (page - 1) * offset
 	var overtime []Overtimes
 	qb, _ := orm.NewQueryBuilder("mysql")
-	qb.Select("l.overtimeid", "l.userid", "l.started", "l.ended", "l.longtime", "l.holiday", "l.way", "l.approverids", "la.status").From("pms_overtimes_approver AS la").
-		LeftJoin("pms_overtimes AS l").On("l.overtimeid = la.overtimeid").
+	qb.Select("l.overtimeid", "l.userid", "l.started", "l.ended", "l.longtime", "l.holiday", "l.way", "l.approverids", "la.status").From("am_overtimes_approver AS la").
+		LeftJoin("am_overtimes AS l").On("l.overtimeid = la.overtimeid").
 		Where("la.userid=?").
 		And("l.status=2")
 
@@ -159,8 +159,8 @@ type TmpOvertimeCount struct {
 
 func CountOvertimeApproval(condArr map[string]string) int64 {
 	qb, _ := orm.NewQueryBuilder("mysql")
-	qb.Select("Count(1) AS num").From("pms_overtimes_approver AS la").
-		LeftJoin("pms_overtimes AS l").On("l.overtimeid = la.overtimeid").
+	qb.Select("Count(1) AS num").From("am_overtimes_approver AS la").
+		LeftJoin("am_overtimes AS l").On("l.overtimeid = la.overtimeid").
 		Where("la.userid=?").
 		And("l.status=2")
 	if condArr["status"] == "0" {

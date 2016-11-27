@@ -47,8 +47,8 @@ func (this *Users) TableName() string {
 func init() {
 	//orm.RegisterModel(new(Users), new(UsersProfile))
 	orm.RegisterModel(new(Users))
-	//orm.RegisterModelWithPrefix("pms_", new(Users))
-	orm.RegisterModelWithPrefix("pms_", new(UsersProfile))
+	//orm.RegisterModelWithPrefix("am_", new(Users))
+	orm.RegisterModelWithPrefix("am_", new(UsersProfile))
 }
 
 //登录
@@ -67,7 +67,7 @@ func LoginUser(username, password string) (err error, user Users) {
 	err = qs.Limit(1).One(&users, "userid", "username", "avatar")
 	fmt.Println(err)
 	if err == nil {
-		o.Raw("UPDATE pms_users_profile SET lasted = ?,lognum=lognum+? WHERE userid = ?", time.Now().Unix(), 1, users.Id).Exec()
+		o.Raw("UPDATE am_users_profile SET lasted = ?,lognum=lognum+? WHERE userid = ?", time.Now().Unix(), 1, users.Id).Exec()
 	}
 	return err, users
 }
@@ -399,9 +399,9 @@ type UsersFind struct {
 func ListUserFind() (num int64, err error, user []UsersFind) {
 	var users []UsersFind
 	qb, _ := orm.NewQueryBuilder("mysql")
-	qb.Select("upr.userid", "upr.realname", "p.name AS position", "u.avatar").From("pms_users AS u").
-		LeftJoin("pms_users_profile AS upr").On("upr.userid = u.userid").
-		LeftJoin("pms_positions AS p").On("p.positionid = upr.positionid").
+	qb.Select("upr.userid", "upr.realname", "p.name AS position", "u.avatar").From("am_users AS u").
+		LeftJoin("am_users_profile AS upr").On("upr.userid = u.userid").
+		LeftJoin("am_positions AS p").On("p.positionid = upr.positionid").
 		OrderBy("p.name").
 		Desc()
 	sql := qb.String()

@@ -56,7 +56,7 @@ func UpdateGooutsApprover(id int64, upd GooutsApprover) error {
 		//直接结束
 		if upd.Status == 2 {
 			ChangeGooutResult(upd.Gooutid, 2)
-			o.Raw("UPDATE pms_goouts_approver SET status = ?,summary = ?, changed = ? WHERE gooutid = ? AND approverid != ?", 2, "前审批人拒绝，后面审批人默认为拒绝状态", time.Now().Unix(), upd.Gooutid, id).Exec()
+			o.Raw("UPDATE am_goouts_approver SET status = ?,summary = ?, changed = ? WHERE gooutid = ? AND approverid != ?", 2, "前审批人拒绝，后面审批人默认为拒绝状态", time.Now().Unix(), upd.Gooutid, id).Exec()
 		} else {
 			_, _, approvers := ListGooutApproverProcess(upd.Gooutid)
 			//检测审批顺序
@@ -87,10 +87,10 @@ type GooutApproverProcess struct {
 func ListGooutApproverProcess(gooutid int64) (num int64, err error, user []GooutApproverProcess) {
 	var users []GooutApproverProcess
 	qb, _ := orm.NewQueryBuilder("mysql")
-	qb.Select("upr.userid", "upr.realname", "p.name AS position", "u.avatar", "la.status", "la.summary", "la.changed").From("pms_goouts_approver AS la").
-		LeftJoin("pms_users AS u").On("u.userid = la.userid").
-		LeftJoin("pms_users_profile AS upr").On("upr.userid = u.userid").
-		LeftJoin("pms_positions AS p").On("p.positionid = upr.positionid").
+	qb.Select("upr.userid", "upr.realname", "p.name AS position", "u.avatar", "la.status", "la.summary", "la.changed").From("am_goouts_approver AS la").
+		LeftJoin("am_users AS u").On("u.userid = la.userid").
+		LeftJoin("am_users_profile AS upr").On("upr.userid = u.userid").
+		LeftJoin("am_positions AS p").On("p.positionid = upr.positionid").
 		Where("la.gooutid=?").
 		OrderBy("la.approverid").
 		Asc()

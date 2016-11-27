@@ -135,8 +135,8 @@ func ListBusinesstripApproval(condArr map[string]string, page int, offset int) (
 	start := (page - 1) * offset
 	var businesstrip []Businesstrips
 	qb, _ := orm.NewQueryBuilder("mysql")
-	qb.Select("l.businesstripid", "l.userid", "l.days", "l.changed", "l.approverids", "la.status").From("pms_businesstrips_approver AS la").
-		LeftJoin("pms_businesstrips AS l").On("l.businesstripid = la.businesstripid").
+	qb.Select("l.businesstripid", "l.userid", "l.days", "l.changed", "l.approverids", "la.status").From("am_businesstrips_approver AS la").
+		LeftJoin("am_businesstrips AS l").On("l.businesstripid = la.businesstripid").
 		Where("la.userid=?").
 		And("l.status=2")
 
@@ -164,8 +164,8 @@ type TmpBusinesstripCount struct {
 
 func CountBusinesstripApproval(condArr map[string]string) int64 {
 	qb, _ := orm.NewQueryBuilder("mysql")
-	qb.Select("Count(1) AS num").From("pms_businesstrips_approver AS la").
-		LeftJoin("pms_businesstrips AS l").On("l.businesstripid = la.businesstripid").
+	qb.Select("Count(1) AS num").From("am_businesstrips_approver AS la").
+		LeftJoin("am_businesstrips AS l").On("l.businesstripid = la.businesstripid").
 		Where("la.userid=?").
 		And("l.status=2")
 	if condArr["status"] == "0" {

@@ -141,8 +141,8 @@ func ListLeaveApproval(condArr map[string]string, page int, offset int) (num int
 	start := (page - 1) * offset
 	var leave []Leaves
 	qb, _ := orm.NewQueryBuilder("mysql")
-	qb.Select("l.leaveid", "l.type", "l.userid", "l.started", "l.ended", "l.days", "l.approverids", "la.status").From("pms_leaves_approver AS la").
-		LeftJoin("pms_leaves AS l").On("l.leaveid = la.leaveid").
+	qb.Select("l.leaveid", "l.type", "l.userid", "l.started", "l.ended", "l.days", "l.approverids", "la.status").From("am_leaves_approver AS la").
+		LeftJoin("am_leaves AS l").On("l.leaveid = la.leaveid").
 		Where("la.userid=?").
 		And("l.status=2")
 
@@ -170,8 +170,8 @@ type TmpLeaveCount struct {
 
 func CountLeaveApproval(condArr map[string]string) int64 {
 	qb, _ := orm.NewQueryBuilder("mysql")
-	qb.Select("Count(1) AS num").From("pms_leaves_approver AS la").
-		LeftJoin("pms_leaves AS l").On("l.leaveid = la.leaveid").
+	qb.Select("Count(1) AS num").From("am_leaves_approver AS la").
+		LeftJoin("am_leaves AS l").On("l.leaveid = la.leaveid").
 		Where("la.userid=?").
 		And("l.status=2")
 	if condArr["status"] == "0" {

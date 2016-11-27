@@ -56,7 +56,7 @@ func UpdateLeavesApprover(id int64, upd LeavesApprover) error {
 		//直接结束
 		if upd.Status == 2 {
 			ChangeLeaveResult(upd.Leaveid, 2)
-			o.Raw("UPDATE pms_leaves_approver SET status = ?,summary = ?, changed = ? WHERE leaveid = ? AND approverid != ?", 2, "前审批人拒绝，后面审批人默认为拒绝状态", time.Now().Unix(), upd.Leaveid, id).Exec()
+			o.Raw("UPDATE am_leaves_approver SET status = ?,summary = ?, changed = ? WHERE leaveid = ? AND approverid != ?", 2, "前审批人拒绝，后面审批人默认为拒绝状态", time.Now().Unix(), upd.Leaveid, id).Exec()
 		} else {
 			_, _, approvers := ListLeaveApproverProcess(upd.Leaveid)
 			//检测审批顺序
@@ -87,10 +87,10 @@ type LeaveApproverProcess struct {
 func ListLeaveApproverProcess(leaveid int64) (num int64, err error, user []LeaveApproverProcess) {
 	var users []LeaveApproverProcess
 	qb, _ := orm.NewQueryBuilder("mysql")
-	qb.Select("upr.userid", "upr.realname", "p.name AS position", "u.avatar", "la.status", "la.summary", "la.changed").From("pms_leaves_approver AS la").
-		LeftJoin("pms_users AS u").On("u.userid = la.userid").
-		LeftJoin("pms_users_profile AS upr").On("upr.userid = u.userid").
-		LeftJoin("pms_positions AS p").On("p.positionid = upr.positionid").
+	qb.Select("upr.userid", "upr.realname", "p.name AS position", "u.avatar", "la.status", "la.summary", "la.changed").From("am_leaves_approver AS la").
+		LeftJoin("am_users AS u").On("u.userid = la.userid").
+		LeftJoin("am_users_profile AS upr").On("upr.userid = u.userid").
+		LeftJoin("am_positions AS p").On("p.positionid = upr.positionid").
 		Where("la.leaveid=?").
 		OrderBy("la.approverid").
 		Asc()

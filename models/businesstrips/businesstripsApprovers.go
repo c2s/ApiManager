@@ -56,7 +56,7 @@ func UpdateBusinesstripsApprover(id int64, upd BusinesstripsApprover) error {
 		//直接结束
 		if upd.Status == 2 {
 			ChangeBusinesstripResult(upd.Businesstripid, 2)
-			o.Raw("UPDATE pms_businesstrips_approver SET status = ?,summary = ?, changed = ? WHERE businesstripid = ? AND approverid != ?", 2, "前审批人拒绝，后面审批人默认为拒绝状态", time.Now().Unix(), upd.Businesstripid, id).Exec()
+			o.Raw("UPDATE am_businesstrips_approver SET status = ?,summary = ?, changed = ? WHERE businesstripid = ? AND approverid != ?", 2, "前审批人拒绝，后面审批人默认为拒绝状态", time.Now().Unix(), upd.Businesstripid, id).Exec()
 		} else {
 			_, _, approvers := ListBusinesstripApproverProcess(upd.Businesstripid)
 			//检测审批顺序
@@ -87,10 +87,10 @@ type BusinesstripApproverProcess struct {
 func ListBusinesstripApproverProcess(businesstripid int64) (num int64, err error, user []BusinesstripApproverProcess) {
 	var users []BusinesstripApproverProcess
 	qb, _ := orm.NewQueryBuilder("mysql")
-	qb.Select("upr.userid", "upr.realname", "p.name AS position", "u.avatar", "la.status", "la.summary", "la.changed").From("pms_businesstrips_approver AS la").
-		LeftJoin("pms_users AS u").On("u.userid = la.userid").
-		LeftJoin("pms_users_profile AS upr").On("upr.userid = u.userid").
-		LeftJoin("pms_positions AS p").On("p.positionid = upr.positionid").
+	qb.Select("upr.userid", "upr.realname", "p.name AS position", "u.avatar", "la.status", "la.summary", "la.changed").From("am_businesstrips_approver AS la").
+		LeftJoin("am_users AS u").On("u.userid = la.userid").
+		LeftJoin("am_users_profile AS upr").On("upr.userid = u.userid").
+		LeftJoin("am_positions AS p").On("p.positionid = upr.positionid").
 		Where("la.businesstripid=?").
 		OrderBy("la.approverid").
 		Asc()

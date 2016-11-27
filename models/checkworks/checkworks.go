@@ -87,7 +87,7 @@ type TmpClockCount struct {
 
 func CountClock(id int64) int64 {
 	qb, _ := orm.NewQueryBuilder("mysql")
-	qb.Select("Count(1) AS num").From("pms_checkworks").
+	qb.Select("Count(1) AS num").From("am_checkworks").
 		Where("userid=?").
 		And("TO_DAYS(FROM_UNIXTIME(created,'%Y-%m-%d'))=TO_DAYS(NOW())")
 

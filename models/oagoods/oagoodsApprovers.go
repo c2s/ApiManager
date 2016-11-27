@@ -56,7 +56,7 @@ func UpdateOagoodsApprover(id int64, upd OagoodsApprover) error {
 		//直接结束
 		if upd.Status == 2 {
 			ChangeOagoodResult(upd.Oagoodid, 2)
-			o.Raw("UPDATE pms_oagoods_approver SET status = ?,summary = ?, changed = ? WHERE oagoodid = ? AND approverid != ?", 2, "前审批人拒绝，后面审批人默认为拒绝状态", time.Now().Unix(), upd.Oagoodid, id).Exec()
+			o.Raw("UPDATE am_oagoods_approver SET status = ?,summary = ?, changed = ? WHERE oagoodid = ? AND approverid != ?", 2, "前审批人拒绝，后面审批人默认为拒绝状态", time.Now().Unix(), upd.Oagoodid, id).Exec()
 		} else {
 			_, _, approvers := ListOagoodApproverProcess(upd.Oagoodid)
 			//检测审批顺序
@@ -87,10 +87,10 @@ type OagoodApproverProcess struct {
 func ListOagoodApproverProcess(oagoodid int64) (num int64, err error, user []OagoodApproverProcess) {
 	var users []OagoodApproverProcess
 	qb, _ := orm.NewQueryBuilder("mysql")
-	qb.Select("upr.userid", "upr.realname", "p.name AS position", "u.avatar", "la.status", "la.summary", "la.changed").From("pms_oagoods_approver AS la").
-		LeftJoin("pms_users AS u").On("u.userid = la.userid").
-		LeftJoin("pms_users_profile AS upr").On("upr.userid = u.userid").
-		LeftJoin("pms_positions AS p").On("p.positionid = upr.positionid").
+	qb.Select("upr.userid", "upr.realname", "p.name AS position", "u.avatar", "la.status", "la.summary", "la.changed").From("am_oagoods_approver AS la").
+		LeftJoin("am_users AS u").On("u.userid = la.userid").
+		LeftJoin("am_users_profile AS upr").On("upr.userid = u.userid").
+		LeftJoin("am_positions AS p").On("p.positionid = upr.positionid").
 		Where("la.oagoodid=?").
 		OrderBy("la.approverid").
 		Asc()

@@ -56,7 +56,7 @@ func UpdateOvertimesApprover(id int64, upd OvertimesApprover) error {
 		//直接结束
 		if upd.Status == 2 {
 			ChangeOvertimeResult(upd.Overtimeid, 2)
-			o.Raw("UPDATE pms_overtimes_approver SET status = ?,summary = ?, changed = ? WHERE overtimeid = ? AND approverid != ?", 2, "前审批人拒绝，后面审批人默认为拒绝状态", time.Now().Unix(), upd.Overtimeid, id).Exec()
+			o.Raw("UPDATE am_overtimes_approver SET status = ?,summary = ?, changed = ? WHERE overtimeid = ? AND approverid != ?", 2, "前审批人拒绝，后面审批人默认为拒绝状态", time.Now().Unix(), upd.Overtimeid, id).Exec()
 		} else {
 			_, _, approvers := ListOvertimeApproverProcess(upd.Overtimeid)
 			//检测审批顺序
@@ -87,10 +87,10 @@ type OvertimeApproverProcess struct {
 func ListOvertimeApproverProcess(overtimeid int64) (num int64, err error, user []OvertimeApproverProcess) {
 	var users []OvertimeApproverProcess
 	qb, _ := orm.NewQueryBuilder("mysql")
-	qb.Select("upr.userid", "upr.realname", "p.name AS position", "u.avatar", "la.status", "la.summary", "la.changed").From("pms_overtimes_approver AS la").
-		LeftJoin("pms_users AS u").On("u.userid = la.userid").
-		LeftJoin("pms_users_profile AS upr").On("upr.userid = u.userid").
-		LeftJoin("pms_positions AS p").On("p.positionid = upr.positionid").
+	qb.Select("upr.userid", "upr.realname", "p.name AS position", "u.avatar", "la.status", "la.summary", "la.changed").From("am_overtimes_approver AS la").
+		LeftJoin("am_users AS u").On("u.userid = la.userid").
+		LeftJoin("am_users_profile AS upr").On("upr.userid = u.userid").
+		LeftJoin("am_positions AS p").On("p.positionid = upr.positionid").
 		Where("la.overtimeid=?").
 		OrderBy("la.approverid").
 		Asc()

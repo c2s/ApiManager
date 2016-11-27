@@ -132,8 +132,8 @@ func ListExpenseApproval(condArr map[string]string, page int, offset int) (num i
 	start := (page - 1) * offset
 	var expense []Expenses
 	qb, _ := orm.NewQueryBuilder("mysql")
-	qb.Select("l.expenseid", "l.userid", "l.total", "l.changed", "l.approverids", "la.status").From("pms_expenses_approver AS la").
-		LeftJoin("pms_expenses AS l").On("l.expenseid = la.expenseid").
+	qb.Select("l.expenseid", "l.userid", "l.total", "l.changed", "l.approverids", "la.status").From("am_expenses_approver AS la").
+		LeftJoin("am_expenses AS l").On("l.expenseid = la.expenseid").
 		Where("la.userid=?").
 		And("l.status=2")
 
@@ -161,8 +161,8 @@ type TmpExpenseCount struct {
 
 func CountExpenseApproval(condArr map[string]string) int64 {
 	qb, _ := orm.NewQueryBuilder("mysql")
-	qb.Select("Count(1) AS num").From("pms_expenses_approver AS la").
-		LeftJoin("pms_expenses AS l").On("l.expenseid = la.expenseid").
+	qb.Select("Count(1) AS num").From("am_expenses_approver AS la").
+		LeftJoin("am_expenses AS l").On("l.expenseid = la.expenseid").
 		Where("la.userid=?").
 		And("l.status=2")
 	if condArr["status"] == "0" {
