@@ -26,7 +26,7 @@ import (
 	"github.com/oliamb/cutter"
 )
 
-//主页
+// 主页
 type MainController struct {
 	controllers.BaseController
 }
@@ -35,7 +35,7 @@ func (this *MainController) Get() {
 	this.TplName = "index.tpl"
 }
 
-//登录
+// 登录
 type LoginUserController struct {
 	controllers.BaseController
 }
@@ -451,8 +451,8 @@ func (this *AddUserController) Post() {
 		//新用户默认权限
 		var per Permissions
 		per.Id = id
-		per.Permission = "project-team,team-add,team-delete,project-need,need-add,need-edit,project-task,task-add,task-edit,project-test,test-add,test-edit,leave-manage,leave-add,leave-edit,leave-view,leave-approval,overtime-manage,overtime-add,overtime-edit,overtime-view,overtime-approval,expense-manage,expense-add,expense-edit,expense-view,expense-approval,businesstrip-manage,businesstrip-add,businesstrip-edit,businesstrip-view,businesstrip-approval,goout-manage,goout-add,goout-edit,goout-view,goout-approval,oagood-manage,oagood-add,oagood-edit,oagood-view,oagood-approval,knowledge-manage,knowledge-add,knowledge-edit,album-manage,album-upload,album-edit"
-		per.Model = "项目管理-project-book||project-manage,审批管理-approval-suitcase||#,知识分享-knowledge-tasks||knowledge-list,员工相册-album-plane||album-list"
+		per.Permission = "system-manage,project-team,team-add,team-delete,project-need,need-add,need-edit,project-task,task-add,task-edit,project-test,test-add,test-edit,leave-manage,leave-add,leave-edit,leave-view,leave-approval,overtime-manage,overtime-add,overtime-edit,overtime-view,overtime-approval,expense-manage,expense-add,expense-edit,expense-view,expense-approval,businesstrip-manage,businesstrip-add,businesstrip-edit,businesstrip-view,businesstrip-approval,goout-manage,goout-add,goout-edit,goout-view,goout-approval,oagood-manage,oagood-add,oagood-edit,oagood-view,oagood-approval,knowledge-manage,knowledge-add,knowledge-edit,album-manage,album-upload,album-edit"
+		per.Model = "系统管理-project-book||system-manage,项目管理-project-book||project-manage,审批管理-approval-suitcase||#,知识分享-knowledge-tasks||knowledge-list,员工相册-album-plane||album-list"
 		per.Modelc = "请假-approval||leave-manage,加班-approval||overtime-manage,报销-approval||expense-manage,出差-approval||businesstrip-manage,外出-approval||goout-manage,物品-approval||oagood-manage"
 		AddPermissions(per)
 		this.Data["json"] = map[string]interface{}{"code": 1, "message": "员工信息添加成功", "id": fmt.Sprintf("%d", id)}
