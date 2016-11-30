@@ -11,7 +11,7 @@
 <div class="container">
   <form class="form-signin" id="login-form">
     <div class="form-signin-heading text-center">
-      <h1 class="sign-title">登录OPMS</h1>
+      <h1 class="sign-title">登录{{config "String" "globaltitle" ""}}</h1>
       <img src="/static/img/logo.png" alt="OPMS" style="width:120px;"/> </div>
     <div class="login-wrap">
       <input type="text" value="libai" class="form-control" name="username" placeholder="请填写用户名,默认:libai" autofocus>
