@@ -48,7 +48,7 @@ func init() {
 
 	// 模块
 	beego.Router("/module/manage", &system.ModuleManageController{})
-	beego.Router("/module/add", &users.AddUserController{})
+	beego.Router("/module/add", &system.AddModuleController{})
 
 	// 角色
 	beego.Router("/role/manage", &system.ModuleManageController{})

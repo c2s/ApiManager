@@ -1,1 +1,1 @@
-<footer> 2016 &copy; Admin by Lock &nbsp;&nbsp;<a href="http://opms.milu365.cn">OPMS官网</a> &middot; <a href="http://opms.docs.milu365.cn">OPMS手册</a></footer>
+<footer> 2016 &copy; Mofree.org &nbsp;&nbsp;<a href="http://www.mofree.org">Mofree</a> &middot; <a href="http://www.haosoft.org">HaoSoft</a></footer>

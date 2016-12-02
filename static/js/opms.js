@@ -351,6 +351,36 @@ $(function(){
             });
         }
     });
+
+	$('#module-form').validate({
+		ignore:'',
+		rules : {
+			Name:{required: true},
+			Ename:{required: true},
+			Url:{required: true},
+			Sort:{required: true}
+		},
+		messages : {
+			Name:{required: '请填写名称'},
+			Ename:{required: '请填写英文名'},
+			Url:{required: '请填写Url'},
+			Sort:{required: '请填写排序'}
+		},
+		submitHandler:function(form) {
+			$(form).ajaxSubmit({
+				type:'POST',
+				dataType:'json',
+				success:function(data) {
+					dialogInfo(data.message)
+					if (data.code) {
+						setTimeout(function(){window.location.href="/module/manage"}, 2000);
+					} else {
+						setTimeout(function(){ $('#dialogInfo').modal('hide'); }, 1000);
+					}
+				}
+			});
+		}
+	});
 	
 	$('.js-project-single').on('click', function(){
     	var that = $(this);
