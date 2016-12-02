@@ -14,12 +14,6 @@
       <!--toggle button start-->
       <a class="toggle-btn"><i class="fa fa-bars"></i></a>
       <!--toggle button end-->
-      <!--search start-->
-      <form class="searchform" action="/module/manage" method="get">
-        <input type="text" class="form-control" name="keywords" placeholder="请输入名称" value="{{.condArr.keywords}}"/>
-        <button type="submit" class="btn btn-primary">搜索</button>
-      </form>
-      <!--search end-->
       {{template "inc/user-info.tpl" .}} </div>
     <!-- header section end-->
     <!-- page heading start-->
@@ -57,23 +51,20 @@
                     </thead>
                     <tbody>
                     
-                    {{range $k,$v := .projects}}
+                    {{range $k,$v := .modules}}
                     <tr>
-                      <td><a href="/project/{{$v.Id}}">{{$v.Name}}</a></td>
-                      <td>{{$v.Aliasname}}</td>
-					  <td><a href="/user/show/{{$v.Userid}}">{{getRealname $v.Userid}}</a></td>
-                      <td>{{getDate $v.Ended}}</td>
-                      <td>{{if eq 1 $v.Status}}挂起{{else if eq 2 $v.Status}}延期{{else if eq 3 $v.Status}}进行{{else if eq 4 $v.Status}}结束{{end}}</td>
+                      <td>{{$v.Name}}</td>
+                      <td>{{$v.Ename}}</td>
+                      <td>{{$v.Url}}</td>
+                      <td>{{$v.Sort}}</td>
+                      <td>{{$v.Status}}</td>
+                      <td>{{getDate $v.Created}}</td>
                       <td><div class="btn-group">
                           <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> 操作<span class="caret"></span> </button>
                           <ul class="dropdown-menu">
                             <li><a href="/project/edit/{{$v.Id}}">编辑</a></li>
                             <li role="separator" class="divider"></li>
-                            <li><a href="javascript:;" class="js-project-single" data-id="{{$v.Id}}" data-status="1">挂起</a></li>
-                            <li><a href="javascript:;" class="js-project-single" data-id="{{$v.Id}}" data-status="2">延期</a></li>
-                            <li role="separator" class="divider"></li>
-                            <li><a href="javascript:;" class="js-project-single" data-id="{{$v.Id}}" data-status="3">进行</a></li>
-                            <li><a href="javascript:;" class="js-project-single" data-id="{{$v.Id}}" data-status="4">结束</a></li>
+                            <li><a href="javascript:;" class="js-project-single" data-id="{{$v.Id}}" data-status="1">删除</a></li>
                           </ul>
                         </div></td>
                     </tr>
